@@ -1,9 +1,9 @@
 name: Build and Test App
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,4 +18,3 @@ jobs:
       - name: Push the Docker image
         id: push
         run: docker push ${{ secrets.DOCKER_USER }}/mdo-posts:$(git rev-parse --short "$GITHUB_SHA")
-        
