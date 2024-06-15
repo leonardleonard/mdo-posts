@@ -25,7 +25,7 @@ jobs:
 
       - name: Set Docker Tag
         id: tag
-        run: echo "TAG=mdo-posts-$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
+        run: echo "TAG=linengchen/mdo-posts-$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
 
       - name: Print Docker Tag
         run: echo "${{ env.TAG }}"
