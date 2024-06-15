@@ -22,6 +22,7 @@ def get_all_posts():
     return jsonify(posts)
 
 
+
 @app.route('/posts/<post_id>', methods=['GET'])
 def get_post(post_id):
     post = collection.find_one({'_id': ObjectId(post_id)})
