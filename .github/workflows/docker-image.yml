@@ -10,20 +10,30 @@ jobs:
     environment: prod
     steps:
       - uses: actions/checkout@v2
+
       - name: Debug Secrets
         run: echo "DOCKER_USER=${{ secrets.DOCKER_USER }}" && echo "DOCKER_PASSWORD=${{ secrets.DOCKER_PASSWORD }}"
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Set Docker Tag
+        id: tag
+        run: echo "TAG=${{ secrets.DOCKER_USER }}/mdo-posts:$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
+
+      - name: Print Docker Tag
+        run: echo "${{ env.TAG }}"
+
       - name: Build the Docker image
         id: build
-        run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USER }}/mdo-posts:$(git rev-parse --short "$GITHUB_SHA")
+        run: docker build . --file Dockerfile --tag ${{ env.TAG }}
+
       - name: Push the Docker image
         id: push
-        run: docker push ${{ secrets.DOCKER_USER }}/mdo-posts:$(git rev-parse --short "$GITHUB_SHA")
-
+        run: docker push ${{ env.TAG }}
