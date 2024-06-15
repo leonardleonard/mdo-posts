@@ -22,8 +22,8 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build the Docker image
         id: build
-        run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USER }}/mdo-posts:$(git rev-parse --short "$GITHUB_SHA")
+        run: docker build . --file Dockerfile --tag $DOCKER_REGISTRY/$IMAGE
       - name: Push the Docker image
         id: push
-        run: docker push ${{ secrets.DOCKER_USER }}/mdo-posts:$(git rev-parse --short "$GITHUB_SHA")
+        run: docker push $DOCKER_REGISTRY/$IMAGE
 
